@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/setTimeFragment">
+
+    <fragment
+        android:id="@+id/setTimeFragment"
+        android:name="com.halogen.bit.ui.set_time.SetTimeFragment"
+        android:label="set_time_fragment"
+        tools:layout="@layout/set_time_fragment" >
+        <action
+            android:id="@+id/finish_set_time"
+            app:destination="@id/countDownFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/countDownFragment"
+        android:name="com.halogen.bit.ui.countdown.CountDownFragment"
+        android:label="CountDownFragment"
+        tools:layout="@layout/countdown_fragment" >
+        <argument
+            android:name="hours"
+            app:argType="integer" />
+        <argument
+            android:name="mins"
+            app:argType="integer" />
+        <argument
+            android:name="secs"
+            app:argType="integer" />
+        <action
+            android:id="@+id/failed"
+            app:destination="@id/failedFragment" />
+        <action
+            android:id="@+id/success"
+            app:destination="@id/successFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/failedFragment"
+        android:name="com.halogen.bit.ui.result.FailedFragment"
+        android:label="fragment_failed"
+        tools:layout="@layout/fragment_failed" />
+    <fragment
+        android:id="@+id/successFragment"
+        android:name="com.halogen.bit.ui.result.SuccessFragment"
+        android:label="fragment_success"
+        tools:layout="@layout/fragment_success" />
+</navigation>

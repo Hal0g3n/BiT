@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "329207210690",
+    "firebase_url": "https://test-30730.firebaseio.com",
+    "project_id": "test-30730",
+    "storage_bucket": "test-30730.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:329207210690:android:3280b87082b302cf4f515b",
+        "android_client_info": {
+          "package_name": "com.halogen.bit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "329207210690-1r804tq3qkh0dpmj9oplohb2p2qpqhnf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZm_hBJG9BdkyoJdFuJDV8QdugKTqbNwE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "329207210690-1r804tq3qkh0dpmj9oplohb2p2qpqhnf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

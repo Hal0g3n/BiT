@@ -10,8 +10,21 @@ import org.junit.Assert.*
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class ExampleUnitTest {
+
+    private val charSet = ('A'..'Z').toList()
+
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun stringToBoolean() {
+        for (i in 1..100) {
+            val code = (1..6)
+                .map { i -> kotlin.random.Random.nextInt(0, charSet.size) }
+                .map(charSet::get)
+                .joinToString("")
+            println(code)
+            if (code.matches(Regex("^[A-Z]{6}$"))) continue
+            assert(false)
+        }
+        assert(true)
     }
+
 }
