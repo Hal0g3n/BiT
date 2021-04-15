@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/setTimeFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/setTimeFragment"
@@ -13,6 +13,9 @@
         <action
             android:id="@+id/finish_set_time"
             app:destination="@id/countDownFragment" />
+        <action
+            android:id="@+id/action_setTimeFragment_to_presetsFragment"
+            app:destination="@id/presetsFragment" />
     </fragment>
 
     <fragment
@@ -41,10 +44,53 @@
         android:id="@+id/failedFragment"
         android:name="com.halogen.bit.ui.result.FailedFragment"
         android:label="fragment_failed"
-        tools:layout="@layout/fragment_failed" />
+        tools:layout="@layout/fragment_failed" >
+        <action
+            android:id="@+id/action_failedFragment_to_setTimeFragment"
+            app:destination="@id/setTimeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/successFragment"
         android:name="com.halogen.bit.ui.result.SuccessFragment"
         android:label="fragment_success"
-        tools:layout="@layout/fragment_success" />
+        tools:layout="@layout/fragment_success" >
+        <action
+            android:id="@+id/action_successFragment_to_setTimeFragment"
+            app:destination="@id/setTimeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.halogen.bit.ui.account.LoginFragment"
+        android:label="login_fragment"
+        tools:layout="@layout/login_fragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_setTimeFragment"
+            app:destination="@id/setTimeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.halogen.bit.ui.account.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFragment_to_setTimeFragment"
+            app:destination="@id/setTimeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/presetsFragment"
+        android:name="com.halogen.bit.ui.presets.PresetsFragment"
+        android:label="presets_fragment"
+        tools:layout="@layout/presets_fragment" />
+    <fragment
+        android:id="@+id/onBoardingFragment"
+        android:name="com.halogen.bit.ui.onBoarding.OnBoardingFragment"
+        android:label="OnBoardingFragment"
+        tools:layout="@layout/fragment_on_boarding">
+        <action
+            android:id="@+id/action_onBoardingFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 </navigation>

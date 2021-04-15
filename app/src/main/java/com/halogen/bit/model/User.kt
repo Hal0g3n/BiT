@@ -11,13 +11,14 @@ import org.mindrot.jbcrypt.BCrypt
  */
 data class User (
     val username: String = "",
-    val password: String = "",
-    var bits: Int = 0
+    var password: String = "",
+    var bits: Int = 0,
 ) {
+    var id: String = ""
 
     //Encrypts the password if necessary
     init {
-        BCrypt.hashpw(password, BCrypt.gensalt())
+        password = BCrypt.hashpw(password, BCrypt.gensalt())
     }
 
     fun checkPassword(password: String) = run {

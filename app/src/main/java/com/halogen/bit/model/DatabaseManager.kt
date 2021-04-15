@@ -44,11 +44,13 @@ class DatabaseManager(
      * @param username String
      * @throws IllegalArgumentException if user does not exist
      */
-    private suspend fun getUser(username: String): User = run {
+    suspend fun getUser(username: String): User = run {
         var user: User? = null
 
-        db.collection("users").document(username).get().addOnSuccessListener { doc ->
-            user = doc.toObject<User>()
+        db.collection("users").whereEqualTo("username", username).get().addOnSuccessListener { query ->
+            if (query.size() != 1) return@addOnSuccessListener
+            user = query.documents[0].toObject<User>()
+            user?.id = query.documents[0].id
         }.await()
 
         return user ?: throw IllegalArgumentException("404 User no Exist")
@@ -62,27 +64,65 @@ class DatabaseManager(
      * @return Boolean
      */
     fun login(username: String, password: String, callback: (Boolean) -> Unit) = GlobalScope.launch {
+
         try {
             //Get the user
             val user = getUser(username)
 
             //If password wrong
             if (!user.checkPassword(password)) callback.invoke(false)
-
             else { //Password is correct, login user
 
                 //Load the user's plans
-                db.collection("users/$username/plans").get()
-                    .addOnSuccessListener {
-                        for (doc in it) {
-                            plans.add(doc.toObject())
-                        }
-                    }.await() //Await so that the plans will all be loaded
+                db.collection("users/${user.id}/plans").get()
+                        .addOnSuccessListener {
+                            for (doc in it) {
+                                plans.add(doc.toObject())
+                            }
+                        }.await() //Await so that the plans will all be loaded
 
+                //Post new User as current User
                 mUser.postValue(user)
+
+                //Successfully logged in
                 callback.invoke(true)
             }
-        } catch (e: Exception) { callback.invoke(false) } //If no such user
+        }
+        //On User non-existent
+        catch (e: IllegalArgumentException) { callback.invoke(false) }
+
+    }
+
+    /**
+     * Function to login the user
+     * @param username String
+     * @param password String
+     * @param callback Given success of login
+     * @return Boolean
+     */
+    fun register(username: String, password: String, callback: (Boolean) -> Unit) = GlobalScope.launch {
+        try {
+            //Create New User
+            val nUser = User(
+                username,
+                password,
+                0
+            )
+
+            //Creating document associated with user
+            nUser.id = db.collection("users").document().id
+            db.collection("users").document(nUser.id).set(nUser).await()
+
+            //Post new User as current User
+            mUser.postValue(nUser)
+
+            //Successfully run
+            callback.invoke(true)
+        }
+
+        //In case of errors
+        catch (e: Exception) { callback.invoke(false) }
+
     }
 }
 
