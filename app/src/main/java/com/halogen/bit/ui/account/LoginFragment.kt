@@ -38,19 +38,16 @@ class LoginFragment : Fragment() {
                 else {
                     //Check if user registered
                     GlobalScope.async {
-                        //Tries to get username
-                        try {
-                            mViewModel.getUser(username)
+                        if (mViewModel.getUser(username) != null) {
                             //It is password wrong
                             requireActivity().runOnUiThread {
                                 pwTextLayout.error = "Wrong Password"
                                 usernameTextLayout.error = ""
                             }
                         }
-                        //If fails, means user non-existent
-                        catch (e: IllegalArgumentException) {
+                        else {
                             requireActivity().runOnUiThread {
-                                //Actually due to user not being registered
+                                //User Not Registered
                                 usernameTextLayout.error = "User Not Registered"
                                 pwTextLayout.error = ""
                             }
@@ -62,7 +59,7 @@ class LoginFragment : Fragment() {
         }
 
         registerButton.setOnClickListener {
-            Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_registerFragment)
+            Navigation.findNavController(requireView()).navigate(R.id.register)
         }
     }
 

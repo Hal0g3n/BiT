@@ -21,6 +21,18 @@ class CountDownViewModel: ViewModel() {
             for (i in 1..seconds) {
                 delay(1000)
                 duration.postValue(duration.value?.dec())
+
+                //If failed midway => cancel
+                if (hasFailed) {
+                    hasFailed = false
+                    return@launch
+                }
+            }
+
+            //If has failed midway => cancel
+            if (hasFailed) {
+                hasFailed = false
+                return@launch
             }
 
             //Called when time is up

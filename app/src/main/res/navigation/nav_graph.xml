@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/setTimeFragment">
 
     <fragment
         android:id="@+id/setTimeFragment"
@@ -34,10 +34,12 @@
             app:argType="integer" />
         <action
             android:id="@+id/failed"
-            app:destination="@id/failedFragment" />
+            app:destination="@id/failedFragment"
+            app:popUpTo="@id/setTimeFragment" />
         <action
             android:id="@+id/success"
-            app:destination="@id/successFragment" />
+            app:destination="@id/successFragment"
+            app:popUpTo="@id/setTimeFragment" />
     </fragment>
 
     <fragment
@@ -47,7 +49,8 @@
         tools:layout="@layout/fragment_failed" >
         <action
             android:id="@+id/action_failedFragment_to_setTimeFragment"
-            app:destination="@id/setTimeFragment" />
+            app:destination="@id/setTimeFragment"
+            app:popUpTo="@id/setTimeFragment" />
     </fragment>
     <fragment
         android:id="@+id/successFragment"
@@ -56,7 +59,8 @@
         tools:layout="@layout/fragment_success" >
         <action
             android:id="@+id/action_successFragment_to_setTimeFragment"
-            app:destination="@id/setTimeFragment" />
+            app:destination="@id/setTimeFragment"
+            app:popUpTo="@id/setTimeFragment" />
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -64,7 +68,7 @@
         android:label="login_fragment"
         tools:layout="@layout/login_fragment" >
         <action
-            android:id="@+id/action_loginFragment_to_registerFragment"
+            android:id="@+id/register"
             app:destination="@id/registerFragment" />
         <action
             android:id="@+id/action_loginFragment_to_setTimeFragment"
@@ -76,14 +80,18 @@
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
-            android:id="@+id/action_registerFragment_to_setTimeFragment"
+            android:id="@+id/register_done"
             app:destination="@id/setTimeFragment" />
     </fragment>
     <fragment
         android:id="@+id/presetsFragment"
         android:name="com.halogen.bit.ui.presets.PresetsFragment"
         android:label="presets_fragment"
-        tools:layout="@layout/presets_fragment" />
+        tools:layout="@layout/presets_fragment" >
+        <action
+            android:id="@+id/action_presetsFragment_to_countDownFragment"
+            app:destination="@id/countDownFragment" />
+    </fragment>
     <fragment
         android:id="@+id/onBoardingFragment"
         android:name="com.halogen.bit.ui.onBoarding.OnBoardingFragment"

@@ -1,6 +1,5 @@
 package com.halogen.bit.model
 
-import android.annotation.SuppressLint
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -9,12 +8,10 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import java.io.File
-import java.io.PrintWriter
-import java.time.LocalDate
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * This is the Database Manager
@@ -44,7 +41,7 @@ class DatabaseManager(
      * @param username String
      * @throws IllegalArgumentException if user does not exist
      */
-    suspend fun getUser(username: String): User = run {
+    suspend fun getUser(username: String): User? = run {
         var user: User? = null
 
         db.collection("users").whereEqualTo("username", username).get().addOnSuccessListener { query ->
@@ -53,7 +50,7 @@ class DatabaseManager(
             user?.id = query.documents[0].id
         }.await()
 
-        return user ?: throw IllegalArgumentException("404 User no Exist")
+        return user
     }
 
     /**
@@ -67,7 +64,7 @@ class DatabaseManager(
 
         try {
             //Get the user
-            val user = getUser(username)
+            val user = getUser(username)!!
 
             //If password wrong
             if (!user.checkPassword(password)) callback.invoke(false)
@@ -89,7 +86,7 @@ class DatabaseManager(
             }
         }
         //On User non-existent
-        catch (e: IllegalArgumentException) { callback.invoke(false) }
+        catch (e: Exception) { callback.invoke(false) }
 
     }
 

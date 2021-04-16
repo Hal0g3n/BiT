@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
@@ -44,6 +45,8 @@ class CountDownFragment: Fragment() {
             sec_text.text = it.secs.toString()
         }
 
+        //Set up Wake Lock
+        requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
     override fun onStart() {
@@ -69,7 +72,12 @@ class CountDownFragment: Fragment() {
 
     override fun onPause() {
         super.onPause()
+
+        //Stops timer
         timerJob.cancel()
+
+        //Release Wake Lock on done
+        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
 }

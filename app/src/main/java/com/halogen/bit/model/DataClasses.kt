@@ -1,7 +1,7 @@
 package com.halogen.bit.model
 
 import java.lang.IllegalArgumentException
-import java.time.LocalDate
+import java.util.*
 
 /**
  * This data class represents a plan
@@ -15,15 +15,23 @@ data class Plan (
     override fun toString(): String {
         return "$name,$duration"
     }
-
-    companion object {
-        /**
-         * This plan represents an infinitely running plan
-         * For those who prefer a stopwatch instead of a timer
-         */
-        val MARATHON = Plan("Marathon", Duration.ZERO)
-    }
 }
+
+/**
+ * This is a class to store the Auction information
+ * @property startingDate Date When it starts
+ * @property closingDate Date  When it ends
+ * @property itemName String   Item Name
+ * @property id String
+ * @property link String Link to the URL of product
+ */
+data class Auction(
+    val startingDate: Date,
+    val closingDate: Date,
+    val itemName: String,
+    val id: String,
+    val link: String
+)
 
 /**
  * This is a class to store the time for a plan.
