@@ -121,6 +121,14 @@ class DatabaseManager(
         catch (e: Exception) { callback.invoke(false) }
 
     }
+
+    fun logout() {
+        //Delete all the plans
+        plans.clear()
+
+        //Update that there is no more user
+        mUser.postValue(null)
+    }
 }
 
 /* Deprecated code {
