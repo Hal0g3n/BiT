@@ -8,14 +8,31 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/tool_bar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:titleTextColor="@color/colorPrimary"
-        app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        android:visibility="gone"/>
+        android:layout_height="wrap_content"
+        android:maxHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:contentInsetStart="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_drawer">
+
+        <ImageView
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="center_horizontal|top"
+            android:scaleType="centerInside"
+            android:visibility="visible"
+            app:srcCompat="@drawable/logo"
+            tools:layout_editor_absoluteX="72dp"
+            tools:layout_editor_absoluteY="16dp" />
+
+    </androidx.appcompat.widget.Toolbar>
+
 
     <fragment
         android:id="@+id/fragment"
@@ -23,9 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph"
-        tools:layout_editor_absoluteX="198dp"
-        tools:layout_editor_absoluteY="506dp" />
+        app:navGraph="@navigation/nav_graph" />
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"

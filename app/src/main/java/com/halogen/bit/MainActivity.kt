@@ -5,6 +5,8 @@ import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.view.Gravity
+import android.view.View
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -14,13 +16,16 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
-import com.halogen.bit.MainActivity.Companion.onActivityExit
+import androidx.transition.Slide
+import androidx.transition.Transition
+import androidx.transition.TransitionManager
 import com.halogen.bit.model.DatabaseManager
 import kotlinx.android.synthetic.main.activity_main.*
 
+
 class MainActivity : AppCompatActivity() {
 
-    val mViewModel: DatabaseManager by viewModels()
+    private val mViewModel: DatabaseManager by viewModels()
 
     companion object {
         var onActivityExit: (() -> Unit)? = null
@@ -53,9 +58,8 @@ class MainActivity : AppCompatActivity() {
 
         //Set up the music
         player.isLooping = true
-        player.setVolume(.2f,.2f)
+        player.setVolume(.2f, .2f)
         player.start()
-
 
         verifyPermissions()
 
@@ -64,11 +68,14 @@ class MainActivity : AppCompatActivity() {
 
         //Placeholder toolbar for replacing later
         toolbar = tool_bar
+        toolbar.setNavigationOnClickListener { drawer.openDrawer(GravityCompat.START) }
         setSupportActionBar(toolbar)
 
         //Setting up the navigation drawer
         val navController = findNavController(R.id.fragment)
         appBarConfiguration = AppBarConfiguration(setOf(R.id.nav_about, R.id.nav_login), drawer_layout)
+
+        nav_view.setupWithNavController(navController)
 
         //appBarConfiguration Configuration
         mViewModel.user.observe(this) { nUser ->
@@ -86,7 +93,6 @@ class MainActivity : AppCompatActivity() {
             if (nUser == null) NavigationUI.onNavDestinationSelected(nav_view.menu.findItem(R.id.nav_login), navController)
 
             //Re init the drawer
-            setupActionBarWithNavController(navController, appBarConfiguration)
             nav_view.setupWithNavController(navController)
 
             //This works no matter the drawer menu layout but must reinit on menu clear
@@ -100,7 +106,7 @@ class MainActivity : AppCompatActivity() {
                     AlertDialog.Builder(this, R.style.MyDialogTheme)
                             .setTitle("Logout")
                             .setMessage("Are you sure you want to logout now?")
-                            .setPositiveButton("Yes") {_,_-> mViewModel.logout() }
+                            .setPositiveButton("Yes") { _, _-> mViewModel.logout() }
                             .setNegativeButton("No", null)
                             .setIcon(android.R.drawable.ic_dialog_alert)
                             .show()
@@ -113,7 +119,7 @@ class MainActivity : AppCompatActivity() {
         mViewModel.user.observe(this) {
             val layout = nav_view.getHeaderView(0)
             val userName = layout.findViewById<TextView>(R.id.userName)
-            userName.text = it?.username ?:"You are not logged in!"
+            userName.text = it?.username ?: "Guest"
         }
 
     }
@@ -134,4 +140,13 @@ class MainActivity : AppCompatActivity() {
         onActivityExit?.invoke()
     }
 
+    fun toggleToolbar(show: Boolean) {
+
+        val transition: Transition = Slide(Gravity.TOP)
+        transition.duration = 200
+        transition.addTarget(toolbar)
+        TransitionManager.beginDelayedTransition(toolbar, transition)
+
+        toolbar.visibility = if (show) View.VISIBLE else View.GONE
+    }
 }

@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
+import com.halogen.bit.MainActivity
 import com.halogen.bit.R
 import com.halogen.bit.model.DatabaseManager
 import kotlinx.android.synthetic.main.fragment_register.*
@@ -29,8 +30,8 @@ class RegisterFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_register, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         registerButton.setOnClickListener {
             val username = usernameField.text.toString()
@@ -68,6 +69,11 @@ class RegisterFragment : Fragment() {
 
         }
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as MainActivity).toolbar.setNavigationIcon(R.drawable.ic_menu_back)
     }
 
 }

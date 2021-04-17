@@ -10,6 +10,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.time.ZoneId
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -78,6 +79,9 @@ class DatabaseManager(
                             }
                         }.await() //Await so that the plans will all be loaded
 
+                //Update history
+                user.updateHistory()
+
                 //Post new User as current User
                 mUser.postValue(user)
 
@@ -102,8 +106,7 @@ class DatabaseManager(
             //Create New User
             val nUser = User(
                 username,
-                password,
-                0
+                password
             )
 
             //Creating document associated with user

@@ -12,7 +12,11 @@ class CountDownViewModel: ViewModel() {
     var hasFailed: Boolean = false
     val duration = MutableLiveData<Duration>()
 
-    fun start(callback: () -> Unit) = run {
+    /**
+     * Starts the timer, callbacks with how long user has focused
+     * @param callback Function1<Int, Unit> Given the time focused
+     */
+    fun start(callback: (Int) -> Unit) = run {
 
         val seconds = duration.value!!.hours * 3600 + duration.value!!.mins * 60 + duration.value!!.secs
 
@@ -24,20 +28,18 @@ class CountDownViewModel: ViewModel() {
 
                 //If failed midway => cancel
                 if (hasFailed) {
+                    //Calc time focused
+                    callback.invoke(i)
+
                     hasFailed = false
                     return@launch
                 }
             }
 
-            //If has failed midway => cancel
-            if (hasFailed) {
-                hasFailed = false
-                return@launch
-            }
-
             //Called when time is up
             delay(1000)
-            callback.invoke()
+
+            callback.invoke(seconds)
         }
 
     }

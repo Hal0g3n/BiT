@@ -1,5 +1,7 @@
 package com.halogen.bit.ui.countdown
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,20 +9,28 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
+import com.halogen.bit.MainActivity
 import com.halogen.bit.MainActivity.Companion.onActivityExit
 import com.halogen.bit.R
+import com.halogen.bit.model.DatabaseManager
 import com.halogen.bit.model.Duration
+import kotlinx.android.synthetic.main.countdown_fragment.*
 import kotlinx.android.synthetic.main.set_time_fragment.*
+import kotlinx.android.synthetic.main.set_time_fragment.hour_text
+import kotlinx.android.synthetic.main.set_time_fragment.min_text
+import kotlinx.android.synthetic.main.set_time_fragment.sec_text
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 
 class CountDownFragment: Fragment() {
 
     private val mViewModel: CountDownViewModel by viewModels()
+    private val databaseManager: DatabaseManager by activityViewModels()
     lateinit var timerJob: Job
 
     override fun onCreateView(
@@ -45,6 +55,11 @@ class CountDownFragment: Fragment() {
             sec_text.text = it.secs.toString()
         }
 
+        giveUpBtn.setOnClickListener {
+            mViewModel.hasFailed = true
+            Navigation.findNavController(requireView()).navigate(R.id.failed)
+        }
+
         //Set up Wake Lock
         requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
@@ -60,6 +75,10 @@ class CountDownFragment: Fragment() {
         timerJob = mViewModel.start {
             Navigation.findNavController(requireView()).navigate(R.id.success)
             onActivityExit = null
+
+            val user = databaseManager.user.value ?: return@start
+            user.history[user.history.lastIndex] += it
+            user.bits += it
         }
 
         onActivityExit = { mViewModel.hasFailed = true }
@@ -68,16 +87,21 @@ class CountDownFragment: Fragment() {
             Navigation.findNavController(requireView()).navigate(R.id.failed)
             mViewModel.hasFailed = true
         }
+
+        (requireActivity() as MainActivity).toggleToolbar(false)
     }
 
     override fun onPause() {
         super.onPause()
+
+        (requireActivity() as MainActivity).toggleToolbar(true)
 
         //Stops timer
         timerJob.cancel()
 
         //Release Wake Lock on done
         requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+
     }
 
 }

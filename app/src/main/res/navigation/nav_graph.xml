@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/setTimeFragment">
+    app:startDestination="@id/nav_login">
 
     <fragment
         android:id="@+id/setTimeFragment"
@@ -66,13 +66,17 @@
         tools:layout="@layout/login_fragment" >
         <action
             android:id="@+id/register"
-            app:destination="@id/registerFragment" />
+            app:destination="@id/nav_regist"
+            app:enterAnim="@anim/shoot_in_left"
+            app:exitAnim="@anim/shoot_out_right"
+            app:popEnterAnim="@anim/shoot_in_right"
+            app:popExitAnim="@anim/shoot_out_left" />
         <action
             android:id="@+id/action_loginFragment_to_setTimeFragment"
             app:destination="@id/setTimeFragment" />
     </fragment>
     <fragment
-        android:id="@+id/registerFragment"
+        android:id="@+id/nav_regist"
         android:name="com.halogen.bit.ui.account.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
@@ -98,4 +102,14 @@
             android:id="@+id/action_onBoardingFragment_to_loginFragment"
             app:destination="@id/nav_login" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_shop"
+        android:name="com.halogen.bit.ui.shop.ShopFragment"
+        android:label="fragment_shop"
+        tools:layout="@layout/fragment_shop" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.halogen.bit.ui.account.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

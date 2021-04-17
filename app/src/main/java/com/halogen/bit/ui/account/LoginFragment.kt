@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
+import com.halogen.bit.MainActivity
 import com.halogen.bit.R
 import com.halogen.bit.model.DatabaseManager
 import kotlinx.android.synthetic.main.login_fragment.*
@@ -24,6 +25,8 @@ class LoginFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        noAccButton.setOnClickListener { Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_setTimeFragment) }
 
         loginButton.setOnClickListener {
             val username = usernameField.text.toString()
@@ -63,4 +66,8 @@ class LoginFragment : Fragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        (requireActivity() as MainActivity).toolbar.setNavigationIcon(R.drawable.ic_drawer)
+    }
 }

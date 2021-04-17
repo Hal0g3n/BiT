@@ -1,15 +1,16 @@
 package com.halogen.bit.ui.set_time
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.animation.AnimationUtils
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.FragmentNavigatorExtras
+import com.halogen.bit.MainActivity
 import com.halogen.bit.R
 import kotlinx.android.synthetic.main.set_time_fragment.*
 
@@ -24,8 +25,8 @@ class SetTimeFragment : Fragment() {
         return inflater.inflate(R.layout.set_time_fragment, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         //Increment Listener + Animator
         val incListener = RepeatListener(500, 50) {
@@ -112,6 +113,14 @@ class SetTimeFragment : Fragment() {
                 action,
                 extras
             )
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        (requireActivity() as MainActivity).toolbar.setNavigationOnClickListener {
+            (requireActivity() as MainActivity).drawer.openDrawer(GravityCompat.START)
         }
     }
 
