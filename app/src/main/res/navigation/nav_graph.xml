@@ -13,9 +13,6 @@
         <action
             android:id="@+id/finish_set_time"
             app:destination="@id/countDownFragment" />
-        <action
-            android:id="@+id/action_setTimeFragment_to_presetsFragment"
-            app:destination="@id/presetsFragment" />
     </fragment>
 
     <fragment
@@ -63,7 +60,7 @@
             app:popUpTo="@id/setTimeFragment" />
     </fragment>
     <fragment
-        android:id="@+id/loginFragment"
+        android:id="@+id/nav_login"
         android:name="com.halogen.bit.ui.account.LoginFragment"
         android:label="login_fragment"
         tools:layout="@layout/login_fragment" >
@@ -84,7 +81,7 @@
             app:destination="@id/setTimeFragment" />
     </fragment>
     <fragment
-        android:id="@+id/presetsFragment"
+        android:id="@+id/nav_presets"
         android:name="com.halogen.bit.ui.presets.PresetsFragment"
         android:label="presets_fragment"
         tools:layout="@layout/presets_fragment" >
@@ -99,6 +96,6 @@
         tools:layout="@layout/fragment_on_boarding">
         <action
             android:id="@+id/action_onBoardingFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/nav_login" />
     </fragment>
 </navigation>
