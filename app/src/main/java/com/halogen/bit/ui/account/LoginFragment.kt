@@ -23,8 +23,8 @@ class LoginFragment : Fragment() {
         return inflater.inflate(R.layout.login_fragment, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         noAccButton.setOnClickListener { Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_setTimeFragment) }
 

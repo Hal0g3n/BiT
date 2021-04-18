@@ -80,7 +80,7 @@ class DatabaseManager(
                         }.await() //Await so that the plans will all be loaded
 
                 //Update history
-                user.updateHistory()
+                if (user.updateHistory()) db.document("users/${user.id}").set(user)
 
                 //Post new User as current User
                 mUser.postValue(user)

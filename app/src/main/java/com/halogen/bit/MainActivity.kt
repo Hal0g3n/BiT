@@ -103,7 +103,7 @@ class MainActivity : AppCompatActivity() {
                 drawer.closeDrawer(GravityCompat.START)
 
                 if (it.itemId == R.id.nav_logout) {
-                    AlertDialog.Builder(this, R.style.MyDialogTheme)
+                    AlertDialog.Builder(this)
                             .setTitle("Logout")
                             .setMessage("Are you sure you want to logout now?")
                             .setPositiveButton("Yes") { _, _-> mViewModel.logout() }

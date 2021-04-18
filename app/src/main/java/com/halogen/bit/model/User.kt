@@ -2,6 +2,7 @@ package com.halogen.bit.model
 
 import org.mindrot.jbcrypt.BCrypt
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 import java.util.*
 import kotlin.collections.ArrayList
@@ -19,7 +20,7 @@ data class User (
     val username: String = "",
     var password: String = "",
     var history: ArrayList<Int> = arrayListOf(0),
-    var lastUpdated: LocalDate = LocalDate.now(),
+    var lastUpdated: Date = Date(),
 ) {
     var bits: Int = 0
     var id: String = ""
@@ -29,10 +30,16 @@ data class User (
         password = BCrypt.hashpw(password, BCrypt.gensalt())
     }
 
-    fun updateHistory() {
-        val diff = ChronoUnit.DAYS.between(LocalDate.parse("2021-04-16"), LocalDate.now()).toInt()
-        lastUpdated = LocalDate.now()
+    /**
+     * Updates History and returns true if data is constant else false
+     * @return Boolean
+     */
+    fun updateHistory(): Boolean {
+        val diff = ChronoUnit.DAYS.between(lastUpdated.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), LocalDate.now()).toInt()
+        lastUpdated = Date()
         for (i in 1..diff) history.add(0)
+
+        return diff != 0
     }
 
     fun checkPassword(password: String) = run {

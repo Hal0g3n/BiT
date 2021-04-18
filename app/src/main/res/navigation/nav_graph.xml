@@ -108,7 +108,7 @@
         android:label="fragment_shop"
         tools:layout="@layout/fragment_shop" />
     <fragment
-        android:id="@+id/profileFragment"
+        android:id="@+id/nav_profile"
         android:name="com.halogen.bit.ui.account.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
