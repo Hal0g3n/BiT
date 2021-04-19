@@ -17,12 +17,12 @@ import kotlin.collections.ArrayList
  * @constructor
  */
 data class User (
-    val username: String = "",
+    var username: String = "",
     var password: String = "",
     var history: ArrayList<Int> = arrayListOf(0),
     var lastUpdated: Date = Date(),
-) {
     var bits: Int = 0
+) {
     var id: String = ""
 
     //Encrypts the password if necessary

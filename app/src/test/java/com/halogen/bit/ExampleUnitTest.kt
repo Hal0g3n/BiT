@@ -3,6 +3,10 @@ package com.halogen.bit
 import org.junit.Test
 
 import org.junit.Assert.*
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.temporal.ChronoUnit
+import java.util.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -25,6 +29,12 @@ class ExampleUnitTest {
             assert(false)
         }
         assert(true)
+    }
+
+    @Test
+    fun diffDate() {
+        val diff = ChronoUnit.DAYS.between(LocalDate.parse("2021-04-16"), LocalDate.now()).toInt()
+        assertEquals(1, diff)
     }
 
 }

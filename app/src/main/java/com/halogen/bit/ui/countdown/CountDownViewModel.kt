@@ -10,13 +10,14 @@ import kotlinx.coroutines.launch
 class CountDownViewModel: ViewModel() {
 
     var hasFailed: Boolean = false
+    var passed = 0
     val duration = MutableLiveData<Duration>()
 
     /**
      * Starts the timer, callbacks with how long user has focused
      * @param callback Function1<Int, Unit> Given the time focused
      */
-    fun start(callback: (Int) -> Unit) = run {
+    fun start(callback: () -> Unit) = run {
 
         val seconds = duration.value!!.hours * 3600 + duration.value!!.mins * 60 + duration.value!!.secs
 
@@ -29,7 +30,8 @@ class CountDownViewModel: ViewModel() {
                 //If failed midway => cancel
                 if (hasFailed) {
                     //Calc time focused
-                    callback.invoke(i)
+                    passed = i
+                    callback.invoke()
 
                     hasFailed = false
                     return@launch
@@ -39,7 +41,8 @@ class CountDownViewModel: ViewModel() {
             //Called when time is up
             delay(1000)
 
-            callback.invoke(seconds)
+            passed = seconds
+            callback.invoke()
         }
 
     }

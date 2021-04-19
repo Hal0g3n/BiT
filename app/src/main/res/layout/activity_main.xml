@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:maxHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
+        android:visibility="gone"
         app:contentInsetStart="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,6 +23,7 @@
         app:navigationIcon="@drawable/ic_drawer">
 
         <ImageView
+            android:id="@+id/homeImg"
             android:layout_width="?attr/actionBarSize"
             android:layout_height="?attr/actionBarSize"
             android:layout_gravity="center_horizontal|top"

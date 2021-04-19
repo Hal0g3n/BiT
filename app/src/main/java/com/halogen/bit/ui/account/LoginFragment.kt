@@ -1,12 +1,16 @@
 package com.halogen.bit.ui.account
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
+import com.google.android.material.transition.MaterialFadeThrough
 import com.halogen.bit.MainActivity
 import com.halogen.bit.R
 import com.halogen.bit.model.DatabaseManager
@@ -17,6 +21,12 @@ import kotlinx.coroutines.async
 class LoginFragment : Fragment() {
 
     private val mViewModel : DatabaseManager by activityViewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        exitTransition = MaterialFadeThrough()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -29,7 +39,7 @@ class LoginFragment : Fragment() {
         noAccButton.setOnClickListener { Navigation.findNavController(requireView()).navigate(R.id.action_loginFragment_to_setTimeFragment) }
 
         loginButton.setOnClickListener {
-            val username = usernameField.text.toString()
+            val username = nameField.text.toString()
             val password = passwordField.text.toString()
 
             mViewModel.login(username, password) {
@@ -45,13 +55,13 @@ class LoginFragment : Fragment() {
                             //It is password wrong
                             requireActivity().runOnUiThread {
                                 pwTextLayout.error = "Wrong Password"
-                                usernameTextLayout.error = ""
+                                nameTextLayout.error = ""
                             }
                         }
                         else {
                             requireActivity().runOnUiThread {
                                 //User Not Registered
-                                usernameTextLayout.error = "User Not Registered"
+                                nameTextLayout.error = "User Not Registered"
                                 pwTextLayout.error = ""
                             }
                         }
@@ -66,8 +76,20 @@ class LoginFragment : Fragment() {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+
+        //Close keyboard
+        val imm = requireContext().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(requireView().windowToken, 0)
+    }
+
     override fun onResume() {
         super.onResume()
         (requireActivity() as MainActivity).toolbar.setNavigationIcon(R.drawable.ic_drawer)
+
+        (requireActivity() as MainActivity).toolbar.setNavigationOnClickListener {
+            (requireActivity() as MainActivity).drawer.openDrawer(GravityCompat.START)
+        }
     }
 }

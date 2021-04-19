@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.FragmentNavigatorExtras
+import com.google.android.material.transition.MaterialFadeThrough
 import com.halogen.bit.MainActivity
 import com.halogen.bit.R
 import kotlinx.android.synthetic.main.set_time_fragment.*
@@ -17,6 +18,12 @@ import kotlinx.android.synthetic.main.set_time_fragment.*
 class SetTimeFragment : Fragment() {
 
     private val viewModel: SetTimeViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enterTransition = MaterialFadeThrough()
+        exitTransition = MaterialFadeThrough()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -87,7 +94,7 @@ class SetTimeFragment : Fragment() {
             //If the duration is less than 10 min
             if (viewModel.hours.value == 0 && viewModel.mins.value ?: 0 < 10) {
                 Toast.makeText(requireContext(), "Duration too short", Toast.LENGTH_SHORT).show()
-                //TODO Reminder to add back the return statement
+                return@setOnClickListener
             }
 
 

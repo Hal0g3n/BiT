@@ -9,8 +9,8 @@ import java.util.*
  * @property duration Length of focus
  */
 data class Plan (
-    val name: String,
-    val duration: Duration,
+    val name: String = "",
+    val duration: Duration = Duration.ZERO,
 ) {
     override fun toString(): String {
         return "$name,$duration"

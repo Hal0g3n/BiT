@@ -120,5 +120,13 @@
 
     <string name="done">You did it!</string>
     <string name="give_up">Give Up</string>
+    <string name="history"><u>Hours Focused</u></string>
+    <string name="my_balance"><u>My Balance</u></string>
+    <string name="presets">Plans</string>
+    <string name="name">Name</string>
+    <string name="created_by">Created By</string>
+    <string name="authors">Yap Yuan Xi</string>
+    <string name="api_link_display1">Quote API</string>
+    <string name="quote_API_link">https://github.com/lukePeavey/quotable</string>
 
 </resources>

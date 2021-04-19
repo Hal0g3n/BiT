@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
+import com.google.android.material.transition.MaterialFadeThrough
 import com.google.gson.Gson
 import com.google.gson.JsonObject
+import com.halogen.bit.MainActivity
 import com.halogen.bit.R
 import kotlinx.android.synthetic.main.fragment_failed.*
 import kotlinx.coroutines.GlobalScope
@@ -24,6 +27,11 @@ import java.nio.charset.StandardCharsets
 
 class FailedFragment: Fragment() {
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        exitTransition = MaterialFadeThrough()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,7 +42,7 @@ class FailedFragment: Fragment() {
         GlobalScope.launch {
 
             //Establish Connection to Quote API
-            val connection = URL("https://api.quotable.io/random?tags=success|inspirational").openConnection() as HttpURLConnection
+            val connection = URL("https://api.quotable.io/random?tags=success|inspirational?minLength=20").openConnection() as HttpURLConnection
             connection.requestMethod = "GET"
 
             //Retrieving the information
@@ -53,10 +61,13 @@ class FailedFragment: Fragment() {
         return inflater.inflate(R.layout.fragment_failed, container, false)
     }
 
-    val quote = MutableLiveData<Quote>()
+    private val quote = MutableLiveData<Quote>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        (requireActivity() as MainActivity).toggleToolbar(true)
+        requireActivity().window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         content.visibility = View.INVISIBLE
         author.visibility = View.INVISIBLE
@@ -95,6 +106,8 @@ class FailedFragment: Fragment() {
                         android.R.anim.fade_in
                     )
                 )
+
+
                 requireActivity().runOnUiThread { button3.visibility = View.VISIBLE }
             }
         }

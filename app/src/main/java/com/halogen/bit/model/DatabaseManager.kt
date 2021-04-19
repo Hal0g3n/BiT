@@ -29,6 +29,9 @@ class DatabaseManager(
     //For use by ViewModel only
     private val mUser = MutableLiveData<User?>(null)
 
+    //For gay android to work
+    var notFirst = false
+
     /**
      * Is null if there is no user logged in
      * Else it will contain the user
@@ -131,6 +134,58 @@ class DatabaseManager(
 
         //Update that there is no more user
         mUser.postValue(null)
+    }
+
+    fun update(username: String, password: String): Boolean {
+        if (!user.value!!.checkPassword(password)) return false
+
+        val nUser = user.value!!.copy(username = username, password = password)
+        nUser.bits = user.value!!.bits
+        nUser.id = user.value!!.id
+
+        //Update online database
+        db.collection("users").document(nUser.id).set(nUser)
+
+        mUser.postValue(nUser)
+        return true
+    }
+
+    fun addPlan(plan: Plan): Boolean {
+
+        //If plan with same name already exist
+        plans.forEach{ if (it.name == plan.name) return@addPlan false}
+
+        //Update online database
+        db.collection("users/${mUser.value!!.id}/plans").document().set(plan)
+
+        plans.add(plan)
+        return true
+    }
+
+    fun removePlan(plan: Plan): Boolean {
+        if (!plans.remove(plan)) return false
+
+        //Update online database
+        db.collection("users/${mUser.value!!.id}/plans").whereEqualTo("name", plan.name).get().addOnSuccessListener {
+            for (doc in it) {
+                doc.reference.delete()
+            }
+        }
+
+        return true
+    }
+
+    fun updatePlan(index: Int, plan: Plan): Boolean {
+        if (index !in 0 until plans.size) return false
+
+        //Update online database
+        db.collection("users/${mUser.value!!.id}/plans").whereEqualTo("name", plans[index].name).get().addOnSuccessListener {
+            it.documents[0].reference.set(plan)
+        }
+
+        plans[index] = plan
+
+        return true
     }
 }
 

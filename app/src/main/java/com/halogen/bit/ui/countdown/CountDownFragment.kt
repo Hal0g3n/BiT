@@ -1,9 +1,6 @@
 package com.halogen.bit.ui.countdown
 
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.navArgs
 import androidx.transition.TransitionInflater
 import com.halogen.bit.MainActivity
 import com.halogen.bit.MainActivity.Companion.onActivityExit
@@ -25,7 +21,6 @@ import kotlinx.android.synthetic.main.set_time_fragment.hour_text
 import kotlinx.android.synthetic.main.set_time_fragment.min_text
 import kotlinx.android.synthetic.main.set_time_fragment.sec_text
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancel
 
 class CountDownFragment: Fragment() {
 
@@ -57,6 +52,15 @@ class CountDownFragment: Fragment() {
 
         giveUpBtn.setOnClickListener {
             mViewModel.hasFailed = true
+
+            val user = databaseManager.user.value
+
+            //If there is a user
+            if (user != null) {
+                user.history[user.history.lastIndex] += mViewModel.passed
+                user.bits += mViewModel.passed
+            }
+
             Navigation.findNavController(requireView()).navigate(R.id.failed)
         }
 
@@ -73,12 +77,16 @@ class CountDownFragment: Fragment() {
         mViewModel.duration.value = Duration(args.hours, args.mins, args.secs)
 
         timerJob = mViewModel.start {
-            Navigation.findNavController(requireView()).navigate(R.id.success)
+            //Has Failed
+            if (mViewModel.hasFailed) return@start
+
             onActivityExit = null
+            Navigation.findNavController(requireView()).navigate(R.id.success)
 
             val user = databaseManager.user.value ?: return@start
-            user.history[user.history.lastIndex] += it
-            user.bits += it
+            user.history[user.history.lastIndex] += mViewModel.passed
+            user.bits += mViewModel.passed
+
         }
 
         onActivityExit = { mViewModel.hasFailed = true }
@@ -86,6 +94,10 @@ class CountDownFragment: Fragment() {
         if (mViewModel.hasFailed) {
             Navigation.findNavController(requireView()).navigate(R.id.failed)
             mViewModel.hasFailed = true
+
+            val user = databaseManager.user.value ?: return
+            user.history[user.history.lastIndex] += mViewModel.passed
+            user.bits += mViewModel.passed
         }
 
         (requireActivity() as MainActivity).toggleToolbar(false)

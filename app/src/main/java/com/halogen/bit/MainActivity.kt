@@ -14,6 +14,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import androidx.navigation.ui.*
 import androidx.transition.Slide
@@ -69,7 +70,6 @@ class MainActivity : AppCompatActivity() {
         //Placeholder toolbar for replacing later
         toolbar = tool_bar
         toolbar.setNavigationOnClickListener { drawer.openDrawer(GravityCompat.START) }
-        setSupportActionBar(toolbar)
 
         //Setting up the navigation drawer
         val navController = findNavController(R.id.fragment)
@@ -90,7 +90,8 @@ class MainActivity : AppCompatActivity() {
             if (nUser != null) nav_view.inflateMenu(R.menu.drawer_menu_logged_in)
             else nav_view.inflateMenu(R.menu.drawer_menu_logged_out)
 
-            if (nUser == null) NavigationUI.onNavDestinationSelected(nav_view.menu.findItem(R.id.nav_login), navController)
+            if (nUser == null && mViewModel.notFirst) NavigationUI.onNavDestinationSelected(nav_view.menu.findItem(R.id.nav_login), navController)
+            mViewModel.notFirst = true
 
             //Re init the drawer
             nav_view.setupWithNavController(navController)
@@ -113,6 +114,10 @@ class MainActivity : AppCompatActivity() {
                 }
                 true
             }
+        }
+
+        homeImg.setOnClickListener {
+            Navigation.findNavController(this, R.id.fragment).navigate(R.id.back_home)
         }
 
         //Navigation Drawer Header Configuration

@@ -22,7 +22,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/usernameTextLayout"
+        android:id="@+id/nameTextLayout"
         android:layout_width="288dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -38,7 +38,7 @@
         app:layout_constraintVertical_chainStyle="packed">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/usernameField"
+            android:id="@+id/nameField"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
@@ -60,7 +60,7 @@
         app:layout_constraintBottom_toTopOf="@id/registerButton"
         app:layout_constraintEnd_toStartOf="@+id/guideline5"
         app:layout_constraintStart_toStartOf="@+id/guideline4"
-        app:layout_constraintTop_toBottomOf="@+id/usernameTextLayout">
+        app:layout_constraintTop_toBottomOf="@+id/nameTextLayout">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/passwordField"

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/nav_login">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/setTimeFragment"
@@ -58,6 +58,10 @@
             android:id="@+id/action_successFragment_to_setTimeFragment"
             app:destination="@id/setTimeFragment"
             app:popUpTo="@id/setTimeFragment" />
+        <argument
+            android:name="seconds"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/nav_login"
@@ -67,10 +71,10 @@
         <action
             android:id="@+id/register"
             app:destination="@id/nav_regist"
-            app:enterAnim="@anim/shoot_in_left"
-            app:exitAnim="@anim/shoot_out_right"
-            app:popEnterAnim="@anim/shoot_in_right"
-            app:popExitAnim="@anim/shoot_out_left" />
+            app:enterAnim="@anim/shoot_in_right"
+            app:exitAnim="@anim/shoot_out_left"
+            app:popEnterAnim="@anim/shoot_in_left"
+            app:popExitAnim="@anim/shoot_out_right" />
         <action
             android:id="@+id/action_loginFragment_to_setTimeFragment"
             app:destination="@id/setTimeFragment" />
@@ -92,6 +96,9 @@
         <action
             android:id="@+id/action_presetsFragment_to_countDownFragment"
             app:destination="@id/countDownFragment" />
+        <action
+            android:id="@+id/action_nav_presets_to_presetDetailFragment"
+            app:destination="@id/presetDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/onBoardingFragment"
@@ -99,8 +106,12 @@
         android:label="OnBoardingFragment"
         tools:layout="@layout/fragment_on_boarding">
         <action
-            android:id="@+id/action_onBoardingFragment_to_loginFragment"
-            app:destination="@id/nav_login" />
+            android:id="@+id/onBoarding_to_login"
+            app:destination="@id/nav_login"
+            app:enterAnim="@anim/fui_slide_in_right"
+            app:exitAnim="@anim/fui_slide_out_left"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/nav_shop"
@@ -112,4 +123,40 @@
         android:name="com.halogen.bit.ui.account.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/presetDetailFragment"
+        android:name="com.halogen.bit.ui.presets.PresetDetailFragment"
+        android:label="fragment_preset_detail"
+        tools:layout="@layout/fragment_preset_detail">
+        <argument
+            android:name="plan_index"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
+    <action android:id="@+id/back_home" app:destination="@id/setTimeFragment" />
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.halogen.bit.ui.menu.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/splash_to_onBoarding"
+            app:destination="@id/onBoardingFragment"
+            app:enterAnim="@anim/fui_slide_in_right"
+            app:exitAnim="@anim/fui_slide_out_left"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/splash_to_login"
+            app:destination="@id/nav_login"
+            app:enterAnim="@anim/fui_slide_in_right"
+            app:exitAnim="@anim/fui_slide_out_left"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_about"
+        android:name="com.halogen.bit.ui.menu.AboutFragment"
+        android:label="fragment_about"
+        tools:layout="@layout/fragment_about" />
 </navigation>
