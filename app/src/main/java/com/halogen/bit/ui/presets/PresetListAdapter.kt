@@ -33,9 +33,7 @@ class PresetListAdapter(
 
         init {
 
-            item.setOnClickListener{
-                listener.onItemClick(adapterPosition)
-            }
+            item.setOnClickListener{ listener.onItemClick(adapterPosition, item); }
 
             item.setOnLongClickListener { listener.onItemLongClick(adapterPosition, item); true }
 
@@ -48,7 +46,7 @@ class PresetListAdapter(
     }
 
     interface OnItemClickListener {
-        fun onItemClick(position: Int)
+        fun onItemClick(position: Int, view: View)
         fun onItemLongClick(position: Int, view: View)
     }
 }

@@ -12,7 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.transition.platform.MaterialElevationScale
+import com.google.android.material.transition.MaterialFadeThrough
 import com.halogen.bit.MainActivity
 import com.halogen.bit.R
 import com.halogen.bit.model.DatabaseManager
@@ -25,12 +25,9 @@ class PresetsFragment : Fragment(), PresetListAdapter.OnItemClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        reenterTransition = MaterialElevationScale(true).apply {
-//            duration = 500
-//        }
-//        requireActivity().window.exitTransition = MaterialElevationScale(false).apply {
-//            duration = 500
-//        }
+        enterTransition = MaterialFadeThrough()
+        exitTransition = MaterialFadeThrough()
+        reenterTransition = MaterialFadeThrough()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -65,7 +62,7 @@ class PresetsFragment : Fragment(), PresetListAdapter.OnItemClickListener {
         }
     }
 
-    override fun onItemClick(position: Int) {
+    override fun onItemClick(position: Int, view: View) {
         val plan = databaseManager.plans[position]
         val action = PresetsFragmentDirections.actionPresetsFragmentToCountDownFragment(
             plan.duration.hours,
@@ -77,7 +74,16 @@ class PresetsFragment : Fragment(), PresetListAdapter.OnItemClickListener {
         AlertDialog.Builder(requireContext())
             .setTitle("Start")
             .setMessage("Start the plan now?")
-            .setPositiveButton("Yes") { _, _-> Navigation.findNavController(requireView()).navigate(action) }
+            .setPositiveButton("Yes") { _, _->
+
+                Navigation.findNavController(requireView()).navigate(
+                    action,
+                    FragmentNavigatorExtras(
+                        view to "card",
+                    )
+                )
+
+            }
             .setNegativeButton("No", null)
             .setIcon(android.R.drawable.ic_dialog_alert)
             .show()
@@ -85,9 +91,8 @@ class PresetsFragment : Fragment(), PresetListAdapter.OnItemClickListener {
     }
 
     override fun onItemLongClick(position: Int, view: View) {
-
         val action = PresetsFragmentDirections.actionNavPresetsToPresetDetailFragment(position)
-        val extras = FragmentNavigatorExtras(view to "view")
+        val extras = FragmentNavigatorExtras(view to "card")
         Navigation.findNavController(requireView()).navigate(action, extras)
     }
 }

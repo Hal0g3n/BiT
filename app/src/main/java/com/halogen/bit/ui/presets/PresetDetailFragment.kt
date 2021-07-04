@@ -14,6 +14,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.google.android.material.transition.MaterialContainerTransform
+import com.google.android.material.transition.MaterialFadeThrough
 import com.halogen.bit.R
 import com.halogen.bit.model.DatabaseManager
 import com.halogen.bit.model.Duration
@@ -29,12 +30,16 @@ class PresetDetailFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         sharedElementEnterTransition = MaterialContainerTransform().apply {
             drawingViewId = R.id.fragment
             duration = 500
             scrimColor = Color.TRANSPARENT
             setAllContainerColors(requireContext().obtainStyledAttributes(intArrayOf(R.attr.colorSurface)).use{it.getColor(0, Color.GREEN)})
         }
+
+        exitTransition = MaterialFadeThrough()
+        reenterTransition = MaterialFadeThrough()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

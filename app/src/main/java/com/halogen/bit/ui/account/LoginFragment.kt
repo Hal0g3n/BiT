@@ -25,7 +25,9 @@ class LoginFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        enterTransition = MaterialFadeThrough()
         exitTransition = MaterialFadeThrough()
+        reenterTransition = MaterialFadeThrough()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,

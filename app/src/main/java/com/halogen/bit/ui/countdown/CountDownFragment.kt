@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.transition.TransitionInflater
+import com.google.android.material.transition.MaterialFadeThrough
 import com.halogen.bit.MainActivity
 import com.halogen.bit.MainActivity.Companion.onActivityExit
 import com.halogen.bit.R
@@ -36,6 +37,9 @@ class CountDownFragment: Fragment() {
         // Determine how shared elements are handled
         sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(R.transition.timer_transition)
         sharedElementReturnTransition =  TransitionInflater.from(context).inflateTransition(R.transition.timer_transition)
+
+        exitTransition = MaterialFadeThrough()
+        reenterTransition = MaterialFadeThrough()
 
         return inflater.inflate(R.layout.countdown_fragment, container, false)
     }

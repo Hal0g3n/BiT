@@ -9,11 +9,20 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.navigation.Navigation
+import com.google.android.material.transition.MaterialFadeThrough
 import com.halogen.bit.MainActivity
 import com.halogen.bit.R
 import kotlinx.android.synthetic.main.fragment_splash.*
 
 class SplashFragment : Fragment() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        enterTransition = MaterialFadeThrough()
+        exitTransition = MaterialFadeThrough()
+        reenterTransition = MaterialFadeThrough()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
